@@ -125,6 +125,10 @@ module Paperclip
       # Reset the file size if the original file was reprocessed.
       instance_write(:file_size,   @queued_for_write[:original].size.to_i)
       instance_write(:fingerprint, generate_fingerprint(@queued_for_write[:original]))
+      
+      geometry = Geometry.from_file(@queued_for_write[:original])
+      instance_write(:width,  geometry.width)
+      instance_write(:height, geometry.height)
     ensure
       uploaded_file.close if close_uploaded_file
     end
